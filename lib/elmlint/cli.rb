@@ -1,3 +1,5 @@
+require 'open3'
+
 module ElmLint
   # provides command line interface for elmlint
   class CLI

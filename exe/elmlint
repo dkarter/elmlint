@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 require 'elmlint'
 
-if __FILE__ == $PROGRAM_NAME
-  lint = ElmLint::CLI.new ARGV[0]
-  lint.execute
-end
+lint = ElmLint::CLI.new(ARGV[0] || '.')
+lint.execute
