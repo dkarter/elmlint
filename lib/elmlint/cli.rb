@@ -30,33 +30,32 @@ module ElmLint
       stdout, stderr, status =
         Open3.capture3 "elm-make #{filepath} --warn --report=json --output /dev/null"
 
-      @response_str = (stdout.empty? ? stderr : stdout)
+      response_str = (stdout.empty? ? stderr : stdout)
 
-      @exit_code = status.exitstatus
+      exit_code = status.exitstatus
 
-      if @exit_code != 0
-        parse
-        puts clean_output
+      if exit_code != 0
+        puts clean_output(parse(response_str))
       end
-      exit @exit_code
+      exit exit_code
     end
 
-    def clean_output
+    def clean_output(output)
       # remove empty lines
-      @output.gsub(/^$\n/, '')
+      output.gsub(/^$\n/, '')
     end
 
-    def parse
-      response = if json?
-                   JsonResponse.new @response_str
+    def parse(response_str)
+      response = if json?(response_str)
+                   JsonResponse.new response_str
                  else
-                   NonJsonResponse.new filepath, @response_str
+                   NonJsonResponse.new filepath, response_str
                  end
-      @output = response.parse
+      response.parse
     end
 
-    def json?
-      @response_str[0] == '['
+    def json?(str)
+      str.to_s.chars.first == '['
     end
   end
 end
