@@ -1,41 +1,42 @@
 # Elmlint
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/elmlint`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A linter for Elm for use with NeoMake.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+First install the gem:
 
-```ruby
-gem 'elmlint'
+```sh
+gem install elmlint
 ```
 
-And then execute:
+Make sure you have NeoMake installed (using VimPlug):
 
-    $ bundle
+  Add NeoMake to your `.vimrc`:
 
-Or install it yourself as:
+    ```viml
+    Plug 'neomake/neomake'
+    ```
 
-    $ gem install elmlint
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/elmlint.
+  Run `:PlugInstall`
 
 
-## License
+Add the following to your `.vimrc`:
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+```viml
+let g:neomake_elm_elm_lint_maker = {
+      \ 'exe': 'elmlint',
+      \ 'errorformat': '%f:%l:%c [%t] %m'
+      \ }
+let g:neomake_elm_enabled_makers = ['elm_lint']
+```
 
+# Compatibility
+ElmLint was tested with elm-make 0.18 (Elm Platform 0.18.0) and the latest
+NeoMake as of 03/11/2017.
+
+# Credits
+The code for ElmLint is based on the elm-lint-script repo by Rohan Orton:
+https://github.com/rohanorton/elm-lint-script I simply refactored it a bit and
+packaged it as a gem. It uses elm-make with the warning flag to produce the
+output and do the actual linting.
