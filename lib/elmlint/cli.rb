@@ -27,16 +27,14 @@ module ElmLint
 
       Dir.chdir(root) unless root.empty?
 
-      stdout, stderr, status =
-        Open3.capture3 "elm-make #{filepath} --warn --report=json --output /dev/null"
+      cmd = "elm-make #{filepath} --warn --report=json --output /dev/null"
+      stdout, stderr, status = Open3.capture3(cmd)
 
       response_str = (stdout.empty? ? stderr : stdout)
 
       exit_code = status.exitstatus
 
-      if exit_code != 0
-        puts clean_output(parse(response_str))
-      end
+      puts clean_output(parse(response_str)) if exit_code != 0
       exit exit_code
     end
 
